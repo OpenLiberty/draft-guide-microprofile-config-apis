@@ -34,7 +34,9 @@ Learn how to use MicroProfile Config APIs to access configuration details and ag
 // =================================================================================================
 == What you'll learn
 
-You'll learn how to ... (need to write up). This guide assumes you are familiar with https://openliberty.io/docs/latest/external-configuration.html[External configuration of microservices^] and  https://openliberty.io/docs/latest/reference/feature/mpConfig-3.0.html[MicroProfile Config^]. If you're new to MicroProfile Config, you might want to start with the https://openliberty.io/guides/microprofile-config-intro.html[Separating configuration from code in microservices^] guide and the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide first.
+You'll learn how to externalize and access configuration properties for microservices using MicroProfile Config. This guide assumes you are familiar with https://openliberty.io/docs/latest/external-configuration.html[External configuration of microservices^] and  https://openliberty.io/docs/latest/reference/feature/mpConfig-3.0.html[MicroProfile Config^]. If you're new to MicroProfile Config, you might want to start with the https://openliberty.io/guides/microprofile-config-intro.html[Separating configuration from code in microservices^] guide and the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide first.
+
+You will learn to define properties with expressions, retrieve multi-valued property as a list, retrieve details about the underlying configuration of your microservices, and aggregate related properties into a single property class.
 
 The application that you will be working with is a `query` service. It fetches properties from the `system` microservice. You'll learn different ways to retreive configuration for accessing the `system` service using MicroProfile Config APIs.
 
@@ -46,7 +48,7 @@ The application that you will be working with is a `query` service. It fetches p
 include::{common-includes}/gitclone.adoc[]
 
 // =================================================================================================
-=== Try what youll build
+=== Try what you'll build
 
 The `finish` directory contains the finished implementation for the services in the application. Try the finished application before you build your own.
 
