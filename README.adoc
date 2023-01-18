@@ -34,9 +34,9 @@ Learn how to use MicroProfile Config APIs to access configuration details and ag
 // =================================================================================================
 == What you'll learn
 
-You'll learn how to externalize and access configuration properties for microservices using MicroProfile Config. This guide assumes you are familiar with https://openliberty.io/docs/latest/external-configuration.html[External configuration of microservices^] and  https://openliberty.io/docs/latest/reference/feature/mpConfig-3.0.html[MicroProfile Config^]. If you're new to MicroProfile Config, you might want to start with the https://openliberty.io/guides/microprofile-config-intro.html[Separating configuration from code in microservices^] guide and the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide first.
+https://openliberty.io/docs/latest/reference/feature/mpConfig-3.0.html[MicroProfile Config^] provides a flexible mechanism for application configuration which makes configuring your microservices a breeze. The https://openliberty.io/docs/latest/reference/javadoc/microprofile-5.0-javadoc.html?package=org/eclipse/microprofile/config/package-frame.html&class=org/eclipse/microprofile/config/package-summary.html[MicroProfile Config API^] can be used by applications to retrieve configuration information from different sources. It provides useful annotations that you can use to externalize and inject configured values into your microservices. This guide assumes you are familiar with https://openliberty.io/docs/latest/external-configuration.html[External configuration of microservices^] and https://openliberty.io/docs/latest/reference/feature/mpConfig-3.0.html[MicroProfile Config^]. If you're new to MicroProfile Config, you might want to start with the https://openliberty.io/guides/microprofile-config-intro.html[Separating configuration from code in microservices^] guide and the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide first.
 
-You will learn to define properties with expressions, retrieve multi-valued property as a list, retrieve details about the underlying configuration of your microservices, and aggregate related properties into a single property class.
+You'll learn how to aggregate a number of configuration properties into a CDI bean using the MicroProfile Config API. Aggregating related configuration properties into a single property class is useful because it avoids repeating the injection statement in scatter places. Furthermore, you will also learn how to access your microservice's configuration details. Using the MicroProfile Config API, you will define properties with expressions, retrieve multi-valued property as a list, and perform a lookup on the details of the underlying configuration of your microservices.
 
 The application that you will be working with is a `query` service. It fetches properties from the `system` microservice. You'll learn different ways to retreive configuration for accessing the `system` service using MicroProfile Config APIs.
 
@@ -89,7 +89,7 @@ After you are finished checking out the application, leave the `system` service 
 
 [role='command']
 ```
-mvn -pl liberty:stop
+mvn liberty:stop
 ```
 
 // =================================================================================================
@@ -367,23 +367,7 @@ Results:
 Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-When you are done checking out the application, exit dev mode by pressing `CTRL+C` in the command-line sessions where you ran the `system` and `query` services, or by typing `q` and then pressing the `enter/return` key. Alternatively, you can run the `liberty:stop` goal from the `start` directory in another command-line session for the `system` and `query` services:
-// static guide instruction
-ifndef::cloud-hosted[]
-[role="command"]
-----
-mvn -pl system liberty:stop
-mvn -pl query liberty:stop
-----
-endif::[]
-// cloud hosted instruction
-ifdef::cloud-hosted[]
-```bash
-cd /home/project/guide-microprofile-config-profile/start
-mvn -pl system liberty:stop
-mvn -pl backendServices liberty:stop
-```
-endif::[]
+When you are done checking out the application, exit dev mode by pressing `CTRL+C` in the command-line sessions where you ran the `system` and `query` services, or by typing `q` and then pressing the `enter/return` key. 
 
 == Great work! You're done!
 
