@@ -89,7 +89,7 @@ After you are finished checking out the application, leave the `system` service 
 
 [role='command']
 ```
-mvn -pl liberty:stop
+mvn liberty:stop
 ```
 
 // =================================================================================================
