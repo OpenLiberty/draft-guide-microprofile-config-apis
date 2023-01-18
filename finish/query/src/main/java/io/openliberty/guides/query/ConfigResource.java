@@ -32,7 +32,7 @@ import jakarta.ws.rs.core.MediaType;
 @Path("/config")
 public class ConfigResource {
 
-	// tag::config[]
+    // tag::config[]
     @Inject
     private Config config;
     // end::config[]
@@ -46,7 +46,7 @@ public class ConfigResource {
     private ConfigValue contactConfigValue;
     // end::configValue[]
     // end::contactEmail[]
-    
+
     // tag::configSystemBean[]
     // tag::inject[]
     @Inject
@@ -121,9 +121,9 @@ public class ConfigResource {
         // tag::getPropertyNames[]
         for (String name : config.getPropertyNames()) {
         // end::getPropertyNames[]
-            if (name.startsWith("system.") || 
-                name.startsWith("query.") || 
-                name.equals("role")) {
+            if (name.startsWith("system.")
+            || name.startsWith("query.")
+            || name.equals("role")) {
                 configProperties.put(name, config.getValue(name, String.class));
             }
         }
