@@ -48,7 +48,7 @@ public class SystemResource {
     @ConfigProperty(name = "system.password")
     private String systemPassword;
     // end::password[]
-    
+
     @Inject
     @ConfigProperty(name = "system.contextRoot")
     private String systemContextRoot;
