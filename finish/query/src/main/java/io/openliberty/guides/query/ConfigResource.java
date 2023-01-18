@@ -122,8 +122,8 @@ public class ConfigResource {
         for (String name : config.getPropertyNames()) {
         // end::getPropertyNames[]
             if (name.startsWith("system.")
-            || name.startsWith("query.")
-            || name.equals("role")) {
+                || name.startsWith("query.")
+                || name.equals("role")) {
                 configProperties.put(name, config.getValue(name, String.class));
             }
         }
