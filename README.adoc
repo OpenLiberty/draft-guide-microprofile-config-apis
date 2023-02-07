@@ -250,7 +250,7 @@ Implement the `/query/config` and `/query/config/contact` endpoints in the `quer
 ----
 
 query/ConfigResource.java
-[source, java, linenums, role="code_column hide_tags=copyright,systemConfig,getSystemConfig"]
+[source, java, linenums, role="code_column hide_tags=copyright,configSystemBean,getSystemConfig,importConfigProperties"]
 ----
 include::finish/query/src/main/java/io/openliberty/guides/query/ConfigResource.java[]
 ----

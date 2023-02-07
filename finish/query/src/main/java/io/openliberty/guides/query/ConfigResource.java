@@ -17,7 +17,9 @@ import java.util.Properties;
 
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigValue;
+// tag::importConfigProperties[]
 import org.eclipse.microprofile.config.inject.ConfigProperties;
+// end::importConfigProperties[]
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.config.spi.ConfigSource;
 
