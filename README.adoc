@@ -15,7 +15,7 @@
 :page-related-guides: ['microprofile-config-intro', 'microprofile-config-profile']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
 :source-highlighter: prettify
-:page-seo-title: Configuring microservices: advanced features and functionality with MicroProfile Config API
+:page-seo-title: Configuring microservices: advanced features and functionality
 :page-seo-description: A tutorial and example on how to manage configurations for your Java microservices with property expressions, retrieval of multi-valued properties as lists, configuration source APIs, and bulk-extraction of configuration properties by using Eclipse MicroProfile Config.
 :guide-author: Open Liberty
 = Configuring microservices: advanced features and functionality with MicroProfile Config API
