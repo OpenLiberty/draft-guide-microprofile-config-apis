@@ -52,9 +52,9 @@ public class SystemResource {
     // tag::systemPropertiesProperty[]
     @ConfigProperty(name = "system.properties")
     // end::systemPropertiesProperty[]
-    // tag::systemProperties[]
+    // tag::listStringType[]
     private List<String> systemProperties;
-    // end::systemProperties[]
+    // end::listStringType[]
 
     @GET
     @Path("/{hostname}")

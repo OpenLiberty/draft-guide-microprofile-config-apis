@@ -232,9 +232,9 @@ query/SystemResource.java
 include::finish/query/src/main/java/io/openliberty/guides/query/SystemResource.java[]
 ----
 
-Inject the `system.properties` property by using the [hotspot=systemPropertiesInject file=1]`@Inject` and [hotspot=systemPropertiesProperty file=1]`@ConfigProperty` annotations with a variable type of [hotspot=systemProperties file=1]`List<String>`.
+Inject the `system.properties` property by using the [hotspot=systemPropertiesInject file=1]`@Inject` and [hotspot=systemPropertiesProperty file=1]`@ConfigProperty` annotations with a variable type of [hotspot=listStringType file=1]`List<String>`.
 
-The [hotspot=systemProperties file=1]`systemProperties` variable retrieves the list of system properties from the configuration and passes it to the [hotspot=getSystemPropertiesMethod file=1]`getSystemProperties()` method.
+The [hotspot=listStringType file=1]`systemProperties` variable retrieves the list of system properties from the configuration and passes it to the [hotspot=getSystemPropertiesMethod file=1]`getSystemProperties()` method.
 
 The [hotspot=getSystemPropertiesMethod file=1]`getSystemProperties()` then iterates through this list of system properties by using the [hotspot=systemProperties file=1]`systemProperties` variable to retrieve its value from the `system` service.
 
@@ -279,11 +279,11 @@ query/ConfigResource.java
 include::finish/query/src/main/java/io/openliberty/guides/query/ConfigResource.java[]
 ----
 
-Inject the [hotspot=contactEmail file=1]`query.contactEmail` property as a [hotspot=configValue file]`ConfigValue` type, and add the [hotspot=getContactConfig file=1]`getContactConfig()` class method.
+Inject the [hotspot=contactEmail file=1]`query.contactEmail` property as a [hotspot=configValue file=1]`ConfigValue` type, and add the [hotspot=getContactConfig file=1]`getContactConfig()` class method.
 
 The [hotspot=configValue file=1]`ConfigValue` metadata object holds additional information after the lookup of the [hotspot=queryContactEmail file=1]`query.contactEmail` property. The [hotspot=getSourceName file=1]`getSourceName()`, the [hotspot=getSourceOrdinal file=1]`getSourceOrdinal()` methods determines the ConfigSource name and the ordinal value of the ConfigSource that loaded the property lookup, respectively. The [hotspot=getValue file=1]`getValue()` methods returns the value of the property lookup.
 
-Then, inject the [hotspot=config file=1]`Config` metadata object, and add the [hotspot=getConfigSources file=1]`getConfigSources()` and the [hotspot=getConfigProperties file=1]`getConfigProperties()` class methods.
+Then, inject the [hotspot=config file=1]`Config` metadata object, and add the [hotspot=getConfigSourcesClassMethod file=1]`getConfigSources()` and the [hotspot=getConfigProperties file=1]`getConfigProperties()` class methods.
 
 The [hotspot=getConfigSources file=1]`Config.getConfigSources()` method in the Config API returns all the registered ConfigSources for the current service. These ConfigSources contain the configuration properties that are available to the service. 
 

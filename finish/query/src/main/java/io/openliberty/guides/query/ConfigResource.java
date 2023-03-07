@@ -110,7 +110,7 @@ public class ConfigResource {
     }
     // end::getSystemConfig[]
 
-    //tag::getConfigSources[]
+    //tag::getConfigSourcesClassMethod[]
     public Properties getConfigSources() {
         Properties configSource = new Properties();
         // tag::getConfigSources[]
@@ -120,7 +120,7 @@ public class ConfigResource {
         }
         return configSource;
     }
-    //end::getConfigSources[]
+    //end::getConfigSourcesClassMethod[]
 
     //tag::getConfigProperties[]
     public Properties getConfigProperties() {
