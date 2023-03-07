@@ -73,6 +73,7 @@ public class ConfigResource {
     @GET
     @Path("/contact")
     @Produces(MediaType.APPLICATION_JSON)
+    // tag::getContactConfig[]
     public Properties getContactConfig() {
         Properties configProps = new Properties();
         // tag::getSourceName[]
@@ -89,6 +90,7 @@ public class ConfigResource {
         configProps.put("Value", value);
         return configProps;
     }
+    // end::getContactConfig[]
 
     // tag::getSystemConfig[]
     @GET
@@ -108,6 +110,7 @@ public class ConfigResource {
     }
     // end::getSystemConfig[]
 
+    //tag::getConfigSources[]
     public Properties getConfigSources() {
         Properties configSource = new Properties();
         // tag::getConfigSources[]
@@ -117,7 +120,9 @@ public class ConfigResource {
         }
         return configSource;
     }
+    //end::getConfigSources[]
 
+    //tag::getConfigProperties[]
     public Properties getConfigProperties() {
         Properties configProperties = new Properties();
         // tag::getPropertyNames[]
@@ -131,4 +136,5 @@ public class ConfigResource {
         }
         return configProperties;
     }
+    //end::getConfigProperties[]
 }

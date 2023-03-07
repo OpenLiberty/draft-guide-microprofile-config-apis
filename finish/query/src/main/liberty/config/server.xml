@@ -6,7 +6,9 @@
         <feature>jsonb-2.0</feature>
         <feature>jsonp-2.0</feature>
         <feature>cdi-3.0</feature>
+        <!-- tag::mpconfig[] -->
         <feature>mpConfig-3.0</feature>
+        <!-- end::mpconfig[] -->
         <feature>mpRestClient-3.0</feature>
     </featureManager>
 

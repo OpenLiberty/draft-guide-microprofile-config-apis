@@ -9,21 +9,21 @@
 :page-layout: guide-multipane
 :page-duration: 25 minutes
 :page-releasedate: 2023-01-31
-:page-description: Learn how to use MicroProfile Config APIs to access and aggregate configuration properties.
+:page-description: Explore the full potential of the MicroProfile Config specification.
 :page-tags: ['MicroProfile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['microprofile-config-intro', 'microprofile-config-profile']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
 :source-highlighter: prettify
-:page-seo-title: Aggregating Java microservices configuration with different properties using MicroProfile Config APIs
-:page-seo-description: A tutorial and example on how to access configuration details and aggregate configuration properties into a CDI bean for Java microservices using MicroProfile Config APIs.
+:page-seo-title: Configuring microservices: advanced features and functionality with MicroProfile Config API
+:page-seo-description: A tutorial and example on how to manage configurations for your Java microservices with property expressions, retrieval of multi-valued properties as lists, configuration source APIs, and bulk-extraction of configuration properties by using Eclipse MicroProfile Config.
 :guide-author: Open Liberty
-= Aggregating configuration properties
+= Configuring microservices: advanced features and functionality with MicroProfile Config API
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website].
 
-Learn how to use MicroProfile Config APIs to access configuration details and aggregate configuration properties into a CDI bean.
+Learn how to optimize configuration management for microservices with advanced features like property expressions, retrieval of multi-valued properties as lists, configuration source APIs, and bulk-extraction of configuration properties by using MicroProfile Config.
 
 :win: WINDOWS
 :mac: MAC
@@ -34,13 +34,15 @@ Learn how to use MicroProfile Config APIs to access configuration details and ag
 // =================================================================================================
 == What you'll learn
 
-https://openliberty.io/docs/latest/external-configuration.html[MicroProfile Config^] provides a flexible mechanism for application configuration that makes configuring your microservices a breeze. Applications can use the https://openliberty.io/docs/latest/reference/javadoc/microprofile-5.0-javadoc.html?package=org/eclipse/microprofile/config/package-frame.html&class=org/eclipse/microprofile/config/package-summary.html[MicroProfile Config API^] to retrieve configuration information from different sources. This API provides useful annotations to externalize and inject configured values into your microservices. 
+You'll learn how to improve flexibility and maintainability of your application's configurations by using https://openliberty.io/docs/latest/reference/feature/mpConfig-3.0.html[MicroProfile Config^]. 
 
-This guide assumes you are familiar with https://openliberty.io/docs/latest/external-configuration.html[External configuration of microservices^] and https://openliberty.io/docs/latest/reference/feature/mpConfig-3.0.html[MicroProfile Config^]. If you're new to MicroProfile Config, you might want to start with the https://openliberty.io/guides/microprofile-config-intro.html[Separating configuration from code in microservices^] guide and the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide first.
+MicroProfile Config streamlines the configuration process for microservices by providing a flexible mechanism for application configuration. Application can use the https://openliberty.io/docs/latest/reference/javadoc/microprofile-5.0-javadoc.html?package=org/eclipse/microprofile/config/package-frame.html&class=org/eclipse/microprofile/config/package-summary.html[MicroProfile Config API^] to eliminate the need for repetitive injection statements and simplifies the handling of complex configurations with bulk-extraction of configuration properties, dynamic property expressions, and retrieval of multi-valued properties as lists. Additionally, the configuration source APIs allow for fine-grained control and access to the metadata and values of configuration properties, enabling greater flexibility and customization in managing application configurations.
 
-You'll learn how to aggregate configuration properties into a CDI bean by using the MicroProfile Config API. Aggregating related configuration properties into a single property class is useful because it avoids repeating the injection statement in scattered places. Furthermore, you will also learn how to access your microservice's configuration details. Using the MicroProfile Config API, you will define properties with expressions, retrieve a multi-valued property as a list, and look up the details of the underlying configuration of your microservices.
+This guide builds on the basics of the https://openliberty.io/guides/microprofile-config-intro.html[Separating configuration from code in microservices^] guide and the https://openliberty.io/guides/microprofile-config.html[Configuring microservices^] guide. If you are not familiar with externalizing the configuration of microservices, it will be helpful to read https://openliberty.io/docs/latest/external-configuration.html[this document^] and complete those guides before proceeding.
 
-The application that you will work with is a `query` service. It fetches properties from the `system` microservice. You'll learn different ways to retrieve configuration for accessing the `system` service by using MicroProfile Config APIs.
+The application that you will be working with is a `query` service, which fetches information about the running JVM from a `system` microservice. You will use MicroProfile Config to manage configurations for the `query` service. 
+
+You will learn how to use property expressions in property values and how to retrieve property as a list by using the `@ConfigProperty` annotation. You will also learn how to use the configuration source APIs to retrieve information about a single specified configuration property or the metadata of the underlying application configuration. Finally, you will learn how to aggregate configuration properties into a CDI bean and inject it using the `@ConfigProperties` annotation.
 
 // =================================================================================================
 // Getting Started
@@ -118,33 +120,35 @@ cd query
 mvn liberty:dev
 ```
 
+After you see the following message, your application server in dev mode is ready:
+
+[role="no_copy"]
+----
+**************************************************************
+*    Liberty is running in dev mode.
+----
+
+Dev mode holds your command-line session to listen for file changes. Open another command-line session to continue, or open the project in your editor.
+
 // file 0
-system/server.xml
+query/pom.xml
 [source, XML, linenums, role='code_column']
 ----
-include::finish/system/src/main/liberty/config/server.xml[]
+include::finish/query/pom.xml[]
 ----
 
 // file 1
-query/SystemResource.java
+query/server.xml
 [source, XML, linenums, role='code_column']
 ----
-include::start/query/src/main/java/io/openliberty/guides/query/SystemResource.java[]
+include::finish/query/src/main/liberty/config/server.xml[]
 ----
 
-A [hotspot=basicRegistry file=0]`basicRegistry` element is configured in the `system` server configuration file that is located at `system/src/main/liberty/config/server.xml`. Only the registered user is authorized to access the `system` microservice. Note that the `basicRegistry` element is a simple case for learning purposes. For more information about the different user registries, see the https://openliberty.io/docs/latest/user-registries-application-security.html[User registries documentation^].
+The MicroProfile Config API is included in the MicroProfile dependency that is specified in your [hotspot file=0]`query/pom.xml` file. Look for the dependency with the [hotspot=mpconfig file=0]`microprofile` artifact ID. This dependency provides a library that allows you to use the MicroProfile Config API to externalize configurations for your microservices. The [hotspot=mpconfig file=1]`mpConfig` feature is also enabled in the [hotspot file=1]`query/src/main/liberty/config/server.xml` file.
 
-The `/query/systems/{hostname}` endpoint constructs the [hotspot=authHeader file=1]`authHeader` authorization header with the [hotspot=user file=1]`system.user` and [hotspot=password file=1]`system.password` properties for accessing the `system` microservice. 
+In MicroProfile Config, property expressions provide a way to set and expand variables in property values. To use property expressions, define a property with a `${expression}` syntax, where `expression` is the name of another configuration property. When the property is loaded, the `${expression}` syntax is replaced with the value of the referenced property.
 
-Point your browser to the http://localhost:9085/query/systems/localhost URL. You can see the current OS name and Java version in JSON format. 
-
-Property expressions provide a way to embed expression segments in property values by using the `${...}` sequence. You can include the value of a configuration property in another configuration property by using the `${prop}` syntax. Additionally, you can implement expressions with the following syntax:
-
-* `${prop:default}` - Provides a `default` value after the `:` character if the expression doesn't find a value for the `prop` property.
-
-* `${prop${compose}}` - Composed expressions where inner expressions are resolved first.
-
-* `${prop1}${prop2}` - Multiple expressions.
+You can learn more about property expressions and their syntax at the https://download.eclipse.org/microprofile/microprofile-config-3.0.2/microprofile-config-spec-3.0.2.html#property-expressions[MicroProfile Config specification^].
 
 // file 2
 [role="code_command hotspot file=2", subs="quotes"]
@@ -159,7 +163,11 @@ query/microprofile-config.properties
 include::finish/query/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-Add the [hotspot=userPassword file=2]`system.userPassword` configuration property to the `microprofile-config.properties` file. The [hotspot=userPassword file=2]`system.userPassword` property is expanded to `alice:alicepwd`.
+Define a property called [hotspot=userPassword file=2]`system.userPassword` that references two other properties, [hotspot=user file=2]`system.user` and [hotspot=password file=2]`system.password`. 
+
+The `${system.user}` and `${system.password}` expressions are replaced with their respective values when the [hotspot=userPassword file=2]`system.userPassword` property is loaded, resulting in `alice:alicepwd`.
+
+To use this configuration property,
 
 // file 3
 [role="code_command hotspot file=3", subs="quotes"]
@@ -174,14 +182,25 @@ query/SystemResource.java
 include::staging/query/src/main/java/io/openliberty/guides/query/SystemResource.java[]
 ----
 
-Replace the injection of the `system.user` and `system.password` properties with the [hotspot=userPassword file=3]`system.userPassword` property, and use the [hotspot=authHeader file=3]`systemUserPassword` variable to construct the authorization header.
+// file 4
+system/server.xml
+[source, XML, linenums, role='code_column']
+----
+include::finish/system/src/main/liberty/config/server.xml[]
+----
 
-Because you are running the `query` service in dev mode, the changes that you made were automatically picked up. Check out the service that you modified at the http://localhost:9085/query/systems/localhost URL.
+Injects the [hotspot=userPassword file=3]`system.userPassword` property instead of the separate `system.user` and `system.password` properties. Then, use the [hotspot=authHeader file=3]`systemUserPassword` variable to construct the authorization header for the `system` service.
+
+Note that only registered users can access the system microservice. To authenticate a user, a [hotspot=basicRegistry file=4]`basicRegistry` element is configured in the `system` server configuration file that is at [hotspot file=4]`system/src/main/liberty/config/server.xml`. This `basicRegistry` element is a simple case for learning purposes, and for more information about different user registries, see the https://openliberty.io/docs/latest/user-registries-application-security.html[User registries documentation^].
+
+Because you are running the `query` service in dev mode, the changes that you made were automatically picked up. You're now ready to check out your application in your browser.
+
+Point your browser to the http://localhost:9085/query/systems/localhost URL. You can see the current OS name and Java version in JSON format.
 
 // ===========================================================================================
-== Retrieving property as a list
+== Injecting property as a list
 
-Configuration values are Strings. MicroProfile Config API has built-in converters that automatically convert configured Strings into target types and retrieve multi-valued properties as lists.
+Configuration values are purely Strings. MicroProfile Config API has built-in converters that automatically convert configured Strings into target types. When injecting a multi-valued property, MicroProfile Config API assumes that the property value is a comma-separated list of items. It then splits the value into individual items and returns them as a List of Strings.
 
 // file 0
 [role="code_command hotspot file=0", subs="quotes"]
@@ -196,9 +215,9 @@ query/microprofile-config.properties
 include::finish/query/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-Add the [hotspot=properties file=0]`system.properties` property that contains a list of system properties that are separated by commas.
+Define the [hotspot=properties file=0]`system.properties` property as a comma-separated list of system properties.
 
-Next, update the `/query/systems/{hostname}` endpoint to list more system properties.
+To use this configuration property,
 
 // file 1
 [role="code_command hotspot file=1", subs="quotes"]
@@ -213,18 +232,20 @@ query/SystemResource.java
 include::finish/query/src/main/java/io/openliberty/guides/query/SystemResource.java[]
 ----
 
-Inject the [hotspot=systemPropertiesProperty file=1]`system.properties` configuration property as a `List<String>` type.
+Inject the `system.properties` property by using the [hotspot=systemPropertiesInject file=1]`@Inject` and [hotspot=systemPropertiesProperty file=1]`@ConfigProperty` annotations with a variable type of [hotspot=systemProperties file=1]`List<String>`.
 
-Then, modify the [hotspot=getSystemPropertiesMethod file=1]`getSystemProperties()` method. Iterate through the [hotspot=systemProperties file=1]`systemProperties` list to retrieve all the specified property values from the `systemClient` REST client.
+The [hotspot=systemProperties file=1]`systemProperties` variable retrieves the list of system properties from the configuration and passes it to the [hotspot=getSystemPropertiesMethod file=1]`getSystemProperties()` method.
 
-Check out the service that you modified at the http://localhost:9085/query/systems/localhost URL. You can see the specified system properties in JSON format.
+The [hotspot=getSystemPropertiesMethod file=1]`getSystemProperties()` then iterates through this list of system properties by using the [hotspot=systemProperties file=1]`systemProperties` variable to retrieve its value from the `system` service.
+
+Point your browser to the http://localhost:9085/query/systems/localhost URL. You can see the list of system properties that are retrieved from the `system.properties` property in JSON format.
 
 // ===========================================================================================
 == Using configuration source APIs
 
-MicroProfile Config provides https://openliberty.io/docs/latest/reference/javadoc/microprofile-5.0-javadoc.html?package=org/eclipse/microprofile/config/package-frame.html&class=org/eclipse/microprofile/config/package-summary.html[configuration source APIs^] for retrieving details about configuration properties. You can use the `ConfigValue` API class to retrieve various useful information about a single specified configuration property. Alternatively, you can use the `Config` API class to look up the metadata of all underlying configuration properties. 
+MicroProfile Config provides https://openliberty.io/docs/latest/reference/javadoc/microprofile-5.0-javadoc.html?package=org/eclipse/microprofile/config/package-frame.html&class=org/eclipse/microprofile/config/package-summary.html[configuration source APIs^] for obtaining detail information about your application's configuration. These APIs can be used to retrieve various useful information about a single specified configuration property by using the `ConfigValue` API class, or to lookup the metadata of all underlying configurations of your microservice by using the `Config` API class.
 
-You will implement endpoints that retrieve information specific to this guide by using these two API classes.
+To explore the capabilities of these APIs, you will first add more configuration properties to the ConfigSource.
 
 // file 0
 [role="code_command hotspot file=0", subs="quotes"]
@@ -239,11 +260,12 @@ query/microprofile-config.properties
 include::finish/query/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-Add the [hotspot=role file=0]`role` and the [hotspot=query file=0]`query.*` properties. The [hotspot=contactEmail file=0]`query.contactEmail` property contains composed property expression where the `${role}` inner expression is expanded first. The `${query.${role}}` expression provides the `admin` default value if the expression doesn't find a value. However, in this case, the `role` is defined as `developer`.
+Add the [hotspot=role file=0]`role` and [hotspot=query file=0]`query.*` properties to the [hotspot file=0]`microprofile-config.properties` file. 
 
+Note that the [hotspot=contactEmail file=0]`query.contactEmail` property contains a composed property expression where the `${role}` inner expression is expanded first. The `${query.${role}}` expression provides the `admin` default value if the expression doesn't find a value. In this case, the property `role` is defined as `developer` and the property `query.contactEmail` is expanded to `alice@ol.guides.com`. 
 
-Implement the `/query/config` and `/query/config/contact` endpoints in the `query` service to retrieve configuration information by MicroProfile Config APIs.
- 
+To use the configuration source APIs to retrieve information about these configuration properties,
+
 // file 1
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -257,26 +279,28 @@ query/ConfigResource.java
 include::finish/query/src/main/java/io/openliberty/guides/query/ConfigResource.java[]
 ----
 
-Inject the [hotspot=contactEmail file=1]`query.contactEmail` property as usual, only this time define the type as `ConfigValue`. 
+Inject the [hotspot=contactEmail file=1]`query.contactEmail` property as a [hotspot=configValue file]`ConfigValue` type, and add the [hotspot=getContactConfig file=1]`getContactConfig()` class method.
 
-The [hotspot=configValue file=1]`ConfigValue` metadata object holds additional information after the lookup of the [hotspot=queryContactEmail file=1]`query.contactEmail` property. The [hotspot=getSourceName file=1]`getSourceName()` method determines which ConfigSource has the highest ordinal for the specified property. The [hotspot=getSourceOrdinal file=1]`getSourceOrdinal()` method returns the ordinal value of the ConfigSource that loaded the property lookup. The [hotspot=getValue file=1]`getValue()` methods returns the value of the specified property.
+The [hotspot=configValue file=1]`ConfigValue` metadata object holds additional information after the lookup of the [hotspot=queryContactEmail file=1]`query.contactEmail` property. The [hotspot=getSourceName file=1]`getSourceName()`, the [hotspot=getSourceOrdinal file=1]`getSourceOrdinal()` methods determines the ConfigSource name and the ordinal value of the ConfigSource that loaded the property lookup, respectively. The [hotspot=getValue file=1]`getValue()` methods returns the value of the property lookup.
 
-Inject the [hotspot=config file=1]`Config` metadata object. You can use it to resolve the property value by searching through all configured ConfigSources.
+Then, inject the [hotspot=config file=1]`Config` metadata object, and add the [hotspot=getConfigSources file=1]`getConfigSources()` and the [hotspot=getConfigProperties file=1]`getConfigProperties()` class methods.
 
-The [hotspot=getConfigSources file=1]`getConfigSources()` method returns all the registered configuration sources for the running service. The [hotspot=getPropertyNames file=1]`getPropertyNames()` method finds all configuration property names by searching through all the registered ConfigSources.
+The [hotspot=getConfigSources file=1]`Config.getConfigSources()` method in the Config API returns all the registered ConfigSources for the current service. These ConfigSources contain the configuration properties that are available to the service. 
 
-Check out the following endpoints that you created:
+The [hotspot=getPropertyNames file=1]`Config.getPropertyNames()` method in the Config API finds all configuration property names by searching through all the registered ConfigSources.
+
+Now, check out the following endpoints that you just created:
 
 * The http://localhost:9085/query/config/contact URL returns the source name, source ordinal, and value of the `query.contactEmail` property.
 
 * The http://localhost:9085/query/config URL returns all registered configuration sources and properties of the running `query` service.
 
 // ===========================================================================================
-== Aggregating configuration properties into a CDI bean
+== Injecting configuration as a bulk through @ConfigProperties annotation
 
-Microprofile Config provides a way to aggregate configuration properties that start with the same prefix into a single property class through the `@ConfigProperties` annotation.
+MicroProfile Config provides a practical way to aggregate related configuration properties into a single CDI bean by using the `@ConfigProperties` annotation. This annotation is applied to a plain old Java object (POJO) that serves as a holder for configuration properties, making it easier to retrieve. By injecting the annotated POJO as a CDI bean into a separate POJO, a cleaner and more organized approach to managing configuration properties is achieved.
 
-Define a CDI bean for the configuration properties that share the `system.` prefix.
+To define a CDI bean for the configuration properties that share the `system.` prefix,
 
 // file 0
 [role="code_command hotspot file=0", subs="quotes"]
@@ -291,10 +315,11 @@ query/ConfigSystemBean.java
 include::finish/query/src/main/java/io/openliberty/guides/query/ConfigSystemBean.java[]
 ----
 
-Annotate the [hotspot=ConfigSystemBean file=0]`ConfigSystemBean` class with the [hotspot=prefix file=0]`@ConfigProperties` annotation. The [hotspot=prefix file=0]`prefix` attribute specifies the common prefix of the configuration properties to `system`.
+Annotate the [hotspot=ConfigSystemBean file=0]`ConfigSystemBean` class with the [hotspot=prefix file=0]`@ConfigProperties` annotation. 
 
+The [hotspot=prefix file=0]`@ConfigProperties` annotation is used to specify that the [hotspot=ConfigSystemBean file=0]`ConfigSystemBean` class is a holder for configuration properties. The [hotspot=prefix file=0]`prefix` attribute of the annotation specifies the common prefix of the configuration properties, which in this case is `system`. 
 
-Use the `ConfigSystemBean` class in the `ConfigResource` class.
+To use the `ConfigSystemBean` class,
 
 // file 1
 [role="code_command hotspot file=1", subs="quotes"]
@@ -309,16 +334,16 @@ query/ConfigResource.java
 include::finish/query/src/main/java/io/openliberty/guides/query/ConfigResource.java[]
 ----
 
-The [hotspot=inject file=1]`@Inject` and [hotspot=ConfigProperties file=1]`@ConfigProperties` annotations inject the `ConfigSystemBean` CDI bean to the [hotspot=systemConfig file=1]`systemConfig` field variable.
+Inject the `ConfigSystemBean` CDI bean by using the [hotspot=inject file=1]`@Inject` and [hotspot=ConfigProperties file=1]`@ConfigProperties` annotations to create the [hotspot=systemConfig file=1]`systemConfig` field variable, and add the [hotspot=getSystemConfig file=1]`getSystemConfig()` class method.
 
-The [hotspot=getSystemConfig file=1]`getSystemConfig()` method implements the `/query/config/system` endpoint. The endpoint uses the [hotspot=configSystemBean file=1]`systemConfig` bean to retrieve the values of the [hotspot=systemProperties file=1]`system.*` configuration properties without having to inject them one by one.
+The [hotspot=getSystemConfig file=1]`getSystemConfig()` method retrieves the values of the [hotspot=systemProperties file=1]`system.*` configuration properties by using the [hotspot=configSystemBean file=1]`systemConfig` bean without having to inject them one by one and returns a Properties object that contains the values of the `system.*` configuration properties.
 
 Check out the endpoint that you created at the http://localhost:9085/query/config/system URL. You see all the configuration properties that are prefixed with `system.`.
 
 // ===========================================================================================
 == Testing the application
 
-You will create endpoint tests to test the basic functionality of the `query` microservice. If a test failure occurs, then you might have introduced a bug into the code.
+You will implement several endpoint tests to test the basic functionality of the `query` microservice. If a test failure occurs, then you might have introduced a bug into the code.
 
 // file 0
 [role="code_command hotspot file=0", subs="quotes"]
@@ -373,7 +398,7 @@ When you are done checking out the application, exit dev mode by pressing `CTRL+
 
 == Great work! You're done!
 
-You just learned how to use Microfile Config APIs to aggregate configuration properties into a CDI bean.
+You just learned how to use Microfile Config APIs to optimize configuration management for your microservices.
 
 Feel free to try one of the related guides. They demonstrate new technologies that you can learn to expand on what you built in this guide.
 

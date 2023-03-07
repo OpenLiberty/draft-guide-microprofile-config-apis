@@ -24,6 +24,7 @@
             <version>9.1.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- tag::mpconfig[] -->
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
             <artifactId>microprofile</artifactId>
@@ -31,6 +32,7 @@
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
+        <!-- end::mpconfig[] -->
 
         <!-- For tests -->
         <dependency>
@@ -82,4 +84,3 @@
         </plugins>
     </build>
 </project>
-
