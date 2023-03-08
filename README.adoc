@@ -99,6 +99,10 @@ mvn liberty:stop
 // =================================================================================================
 == Defining a property with expressions
 
+In MicroProfile Config, property expressions provide a way to set and expand variables in property values. To use property expressions, define a property with a `${expression}` syntax, where `expression` is the name of another configuration property. When the property is loaded, the `${expression}` syntax is replaced with the value of the referenced property.
+
+You can learn more about property expressions and their syntax at the https://download.eclipse.org/microprofile/microprofile-config-3.0.2/microprofile-config-spec-3.0.2.html#property-expressions[MicroProfile Config specification^].
+
 // static guide instructions:
 ifndef::cloud-hosted[]
 Navigate to the `start` directory to begin.
@@ -145,10 +149,6 @@ include::finish/query/src/main/liberty/config/server.xml[]
 ----
 
 The MicroProfile Config API is included in the MicroProfile dependency that is specified in your [hotspot file=0]`query/pom.xml` file. Look for the dependency with the [hotspot=mpconfig file=0]`microprofile` artifact ID. This dependency provides a library that allows you to use the MicroProfile Config API to externalize configurations for your microservices. The [hotspot=mpconfig file=1]`mpConfig` feature is also enabled in the [hotspot file=1]`query/src/main/liberty/config/server.xml` file.
-
-In MicroProfile Config, property expressions provide a way to set and expand variables in property values. To use property expressions, define a property with a `${expression}` syntax, where `expression` is the name of another configuration property. When the property is loaded, the `${expression}` syntax is replaced with the value of the referenced property.
-
-You can learn more about property expressions and their syntax at the https://download.eclipse.org/microprofile/microprofile-config-3.0.2/microprofile-config-spec-3.0.2.html#property-expressions[MicroProfile Config specification^].
 
 // file 2
 [role="code_command hotspot file=2", subs="quotes"]
