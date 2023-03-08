@@ -202,6 +202,8 @@ Point your browser to the http://localhost:9085/query/systems/localhost URL. You
 
 Configuration values are just Strings. MicroProfile Config API has built-in converters that automatically convert configured Strings into target types. When injecting a multi-valued property, MicroProfile Config API assumes that the property value is a comma-separated list of items. It then splits the value into individual items and returns them as a List of Strings.
 
+Retrieving a configuration property as a list can be beneficial in situations where the configuration property contains multiple values that need to be accessed and processed within the application. For example, imagine an application that needs to connect to multiple databases. By defining these values as a list of items in the ConfigSource and retrieving them as a list in the application, you can easily access and process each value without having to manually split the values into separate variables.
+
 // file 0
 [role="code_command hotspot file=0", subs="quotes"]
 ----
