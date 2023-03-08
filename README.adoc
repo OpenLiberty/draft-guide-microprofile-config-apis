@@ -99,7 +99,7 @@ mvn liberty:stop
 // =================================================================================================
 == Defining a property with expressions
 
-In MicroProfile Config, property expressions provide a way to set and expand variables in property values. To use property expressions, define a property with a `${expression}` syntax, where `expression` is the name of another configuration property. When the property is loaded, the `${expression}` syntax is replaced with the value of the referenced property.
+In MicroProfile Config, property expressions provide a way to set and expand variables in property values. This is useful when the value of one property depends on the value of another property. For example, defining a `server.baseURL` property as `\http://${server.host}:${server.port}` would automatically update the value of `server.baseURL` when the values of `server.host` or `server.port` change. To use property expressions, define a property with a `${expression}` syntax, where `expression` is the name of another configuration property. When the property is loaded, the `${expression}` syntax is replaced with the value of the referenced property.
 
 You can learn more about property expressions and their syntax at the https://download.eclipse.org/microprofile/microprofile-config-3.0.2/microprofile-config-spec-3.0.2.html#property-expressions[MicroProfile Config specification^].
 
