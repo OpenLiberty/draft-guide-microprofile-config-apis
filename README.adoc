@@ -298,7 +298,7 @@ Now, check out the following endpoints that you just created:
 // ===========================================================================================
 == Injecting configuration as a bulk through @ConfigProperties annotation
 
-MicroProfile Config provides a practical way to aggregate related configuration properties into a single CDI bean by using the `@ConfigProperties` annotation. This annotation is applied to a plain old Java object (POJO) that serves as a holder for configuration properties, making it easier to retrieve. By injecting the annotated POJO as a CDI bean into a separate POJO, a cleaner and more organized approach to managing configuration properties is achieved.
+MicroProfile Config provides a practical way to aggregate related configuration properties into a single CDI bean by using the `@ConfigProperties` annotation. This annotation is applied to a plain old Java object (POJO) that serves as a holder for configuration properties, making it easier to retrieve. Injecting the annotated POJO as a CDI bean into a separate POJO provides a cleaner and more organized approach to managing configuration properties.
 
 To define a CDI bean for the configuration properties that share the `system.` prefix,
 
