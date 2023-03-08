@@ -167,7 +167,7 @@ Define a property called [hotspot=userPassword file=2]`system.userPassword` that
 
 The `${system.user}` and `${system.password}` expressions are replaced with their respective values when the [hotspot=userPassword file=2]`system.userPassword` property is loaded, resulting in `alice:alicepwd`.
 
-To use this configuration property,
+To use this configuration property, add it to the `SystemResource` class.
 
 // file 3
 [role="code_command hotspot file=3", subs="quotes"]
