@@ -9,7 +9,7 @@
 :page-layout: guide-multipane
 :page-duration: 25 minutes
 :page-releasedate: 2023-01-31
-:page-description: Explore the full potential of the MicroProfile Config specification.
+:page-description: Learn how to optimize configuration for microservices with MicroProfile Config advanced features.
 :page-tags: ['MicroProfile']
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['microprofile-config-intro', 'microprofile-config-profile']
