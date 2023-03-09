@@ -46,11 +46,15 @@ public class SystemResource {
     @ConfigProperty(name = "system.contextRoot")
     private String systemContextRoot;
 
-    // tag::systemPropertiesProperty[]
+    // tag::systemPropertiesInject[]
     @Inject
+    // end::systemPropertiesInject[]
+    // tag::systemPropertiesProperty[]
     @ConfigProperty(name = "system.properties")
-    private List<String> systemProperties;
     // end::systemPropertiesProperty[]
+    // tag::listStringType[]
+    private List<String> systemProperties;
+    // end::listStringType[]
 
     @GET
     @Path("/{hostname}")
