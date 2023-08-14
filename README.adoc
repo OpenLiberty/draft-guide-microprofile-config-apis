@@ -148,7 +148,7 @@ query/server.xml
 include::finish/query/src/main/liberty/config/server.xml[]
 ----
 
-The MicroProfile Config API is included in the MicroProfile dependency that is specified in your [hotspot file=0]`query/pom.xml` file. Look for the dependency with the [hotspot=mpconfig file=0]`microprofile` artifact ID. This dependency provides a library that allows you to use the MicroProfile Config API to externalize configurations for your microservices. The [hotspot=mpconfig file=1]`mpConfig` feature is also enabled in the [hotspot file=1]`query/src/main/liberty/config/server.xml` file.
+The MicroProfile Config API is included in the MicroProfile dependency that is specified in your [hotspot file=0]`query/pom.xml` file. Look for the dependency with the [hotspot=mpconfig file=0]`microprofile` artifact ID. This dependency provides a library that allows you to use the MicroProfile Config API to externalize configurations for your microservices. The [hotspot=mpconfig file=1]`mpConfig` feature is also enabled in the [hotspot file=1]`query/src/main/liberty/config/server.xml` configuration file.
 
 // file 2
 [role="code_command hotspot file=2", subs="quotes"]
@@ -191,7 +191,7 @@ include::finish/system/src/main/liberty/config/server.xml[]
 
 Injects the [hotspot=userPassword file=3]`system.userPassword` property instead of the separate `system.user` and `system.password` properties. Then, use the [hotspot=authHeader file=3]`systemUserPassword` variable to construct the authorization header for the `system` service.
 
-Note that only registered users can access the system microservice. To authenticate a user, a [hotspot=basicRegistry file=4]`basicRegistry` element is configured in the `system` server configuration file that is at [hotspot file=4]`system/src/main/liberty/config/server.xml`. This `basicRegistry` element is a simple case for learning purposes, and for more information about different user registries, see the https://openliberty.io/docs/latest/user-registries-application-security.html[User registries documentation^].
+Note that only registered users can access the system microservice. To authenticate a user, a [hotspot=basicRegistry file=4]`basicRegistry` element is configured in the `system` Liberty configuration file that is at [hotspot file=4]`system/src/main/liberty/config/server.xml`. This `basicRegistry` element is a simple case for learning purposes, and for more information about different user registries, see the https://openliberty.io/docs/latest/user-registries-application-security.html[User registries documentation^].
 
 Because you are running the `query` service in dev mode, the changes that you made were automatically picked up. You're now ready to check out your application in your browser.
 
